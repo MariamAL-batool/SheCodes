@@ -2,22 +2,37 @@ const boardButtons = document.getElementById("boardButtons");
 const boardData = document.getElementById("myTabContent");
 let boardCounter = 0;
 let boards = [];
-
 const addBoard = () => {
-  const boardName = prompt("Enter board name: ") || `untitled${boards.length}`;
-  const newBoard = {
-    id: boardCounter,
-    name: boardName,
-    creationDate: Date.now,
-    active: "active",
-  };
-  boards.forEach((board) => {
-    board.active = "";
-  });
-  boards.push(newBoard);
-  console.log(boards);
-  boardCounter++;
-  renderBoarders();
+  const boardName = prompt("Enter board name: ");
+  if (boardName) {
+    let exist = false;
+    for (const board of boards) {
+      if (board.name === boardName) {
+        window.alert("Board already exists");
+        exist = true;
+        break;
+      }
+    }
+    if (boardName === "Home") {
+      window.alert("Board already exists");
+      exist = true;
+    }
+    if (!exist) {
+      const newBoard = {
+        id: boardCounter,
+        name: boardName,
+        creationDate: Date.now,
+        active: "active",
+      };
+      boards.forEach((board) => {
+        board.active = "";
+      });
+      boards.push(newBoard);
+      console.log(boards);
+      boardCounter++;
+      renderBoarders();
+    }
+  }
 };
 
 const renderBoarders = () => {
@@ -34,8 +49,7 @@ const renderBoarders = () => {
               aria-controls="home"
               aria-selected="true"
             >
-              Board X
-            </button>
+Home            </button>
           </li>`
       : `<li class="nav-item py-0 my-0 ps-5" role="presentation">
             <button
@@ -48,8 +62,7 @@ const renderBoarders = () => {
               aria-controls="home"
               aria-selected="true"
             >
-              Board X
-            </button>
+Home            </button>
           </li>`;
   boardData.innerHTML =
     boards.length == 0
@@ -59,8 +72,7 @@ const renderBoarders = () => {
         role="tabpanel"
         aria-labelledby="home-tab"
       >
-                Board X
-
+Home
       </div>
   
       <div
