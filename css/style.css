@@ -1,6 +1,45 @@
 .bg-gray {
   background-color: #e2e2e2;
 }
+.bg-green {
+  background-color: #6bb166;
+}
+.bg-blue {
+  background-color: #2c7787;
+}
+.bg-pink {
+  background-color: #db9494;
+}
 .text-d-gray {
   color: #838383 !important;
 }
+
+/* start nav */
+.boards {
+  font-size: 15px;
+}
+.nav-buttons {
+  font-size: 13px;
+}
+.addNote {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border: 0px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+input {
+  outline: none;
+}
+nav .nav-buttons .fa-trash {
+  color: #a55353;
+}
+.nav-buttons button:hover {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
+}
+
+/* end nav */

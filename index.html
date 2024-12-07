@@ -20,9 +20,9 @@
         role="tablist"
       >
         <div class="boards d-flex">
-          <li class="nav-item ps-5" role="presentation">
+          <li class="nav-item py-0 my-0 ps-5" role="presentation">
             <button
-              class="nav-link active text-d-gray"
+              class="nav-link active text-d-gray px-4 rounded-top-3"
               id="home-tab"
               data-bs-toggle="tab"
               data-bs-target="#home"
@@ -31,12 +31,12 @@
               aria-controls="home"
               aria-selected="true"
             >
-              Bored X
+              Board X
             </button>
           </li>
           <li class="nav-item" role="presentation">
             <button
-              class="nav-link text-d-gray"
+              class="nav-link text-d-gray px-4 rounded-top-3"
               id="profile-tab"
               data-bs-toggle="tab"
               data-bs-target="#profile"
@@ -49,8 +49,18 @@
             </button>
           </li>
         </div>
-        <div class="nav-buttons d-flex pe-4 gap-3">
-          <input type="search" name="search" id="search" placeholder="search" />
+
+        <div class="nav-buttons d-flex pe-4 gap-2 align-items-center pb-1">
+          <div class="search rounded-5 border-0 px-4 py-1 bg-white me-3">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="search"
+              name="search"
+              id="search"
+              placeholder="Search a note"
+              class="border-0"
+            />
+          </div>
 
           <li class="nav-item" role="presentation">
             <button
@@ -61,12 +71,18 @@
               role="tab"
               aria-controls="contact"
               aria-selected="false"
+              class="rounded-5 border-0 px-3 py-1 bg-pink"
             >
-              Archive
+              <i class="fa-solid fa-trash"></i>
+              <span class="ps-1 text-white"> Archived</span>
             </button>
           </li>
-          <button>New board</button>
-          <button><i class="fa-solid fa-plus text-white"></i></button>
+          <button class="rounded-5 border-0 px-4 py-1 bg-blue text-white">
+            New board
+          </button>
+          <button class="addNote bg-green">
+            <i class="fa-solid fa-plus text-white"></i>
+          </button>
         </div>
       </ul>
     </nav>
