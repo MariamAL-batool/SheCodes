@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- bootstrap 5.3-->
+    <link rel="stylesheet" href="./bootstrap.min.css" />
+    <!-- fontawesome 6.4-->
+    <link rel="stylesheet" href="./css/all.min.css" />
+    <!-- custom css-->
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <nav class="pt-4 bg-gray">
+      <ul
+        class="nav nav-tabs d-flex justify-content-between align-items-center"
+        id="myTab"
+        role="tablist"
+      >
+        <div class="boards d-flex">
+          <li class="nav-item ps-5" role="presentation">
+            <button
+              class="nav-link active text-d-gray"
+              id="home-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#home"
+              type="button"
+              role="tab"
+              aria-controls="home"
+              aria-selected="true"
+            >
+              Bored X
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link text-d-gray"
+              id="profile-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#profile"
+              type="button"
+              role="tab"
+              aria-controls="profile"
+              aria-selected="false"
+            >
+              Profile
+            </button>
+          </li>
+        </div>
+        <div class="nav-buttons d-flex pe-4 gap-3">
+          <input type="search" name="search" id="search" placeholder="search" />
+
+          <li class="nav-item" role="presentation">
+            <button
+              id="contact-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#contact"
+              type="button"
+              role="tab"
+              aria-controls="contact"
+              aria-selected="false"
+            >
+              Archive
+            </button>
+          </li>
+          <button>New board</button>
+          <button><i class="fa-solid fa-plus text-white"></i></button>
+        </div>
+      </ul>
+    </nav>
+
+    <div class="tab-content" id="myTabContent">
+      <div
+        class="tab-pane fade show active"
+        id="home"
+        role="tabpanel"
+        aria-labelledby="home-tab"
+      >
+        ...
+      </div>
+      <div
+        class="tab-pane fade"
+        id="profile"
+        role="tabpanel"
+        aria-labelledby="profile-tab"
+      >
+        ...
+      </div>
+      <div
+        class="tab-pane fade"
+        id="contact"
+        role="tabpanel"
+        aria-labelledby="contact-tab"
+      >
+        archive
+      </div>
+    </div>
+    <script src="./bootstrap.bundle.min.js"></script>
+    <script src="./js/main.js"></script>
+  </body>
+</html>
