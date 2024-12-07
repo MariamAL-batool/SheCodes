@@ -89,8 +89,7 @@ Home
         role="tabpanel"
         aria-labelledby="home-tab"
       >
-                Board X
-
+Home
       </div>
   
       <div
