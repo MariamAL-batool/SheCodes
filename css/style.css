@@ -38,7 +38,8 @@ input {
 nav .nav-buttons .fa-trash {
   color: #a55353;
 }
-.nav-buttons button:hover {
+.nav-buttons button:hover,
+.nav-buttons button:focus {
   background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
 }
 

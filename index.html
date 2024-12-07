@@ -19,7 +19,7 @@
         id="myTab"
         role="tablist"
       >
-        <div class="boards d-flex">
+        <div class="boards d-flex" id="boardButtons">
           <li class="nav-item py-0 my-0 ps-5" role="presentation">
             <button
               class="nav-link active text-d-gray px-4 rounded-top-3"
@@ -32,20 +32,6 @@
               aria-selected="true"
             >
               Board X
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button
-              class="nav-link text-d-gray px-4 rounded-top-3"
-              id="profile-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#profile"
-              type="button"
-              role="tab"
-              aria-controls="profile"
-              aria-selected="false"
-            >
-              Profile
             </button>
           </li>
         </div>
@@ -64,12 +50,12 @@
 
           <li class="nav-item" role="presentation">
             <button
-              id="contact-tab"
+              id="archive-tab"
               data-bs-toggle="tab"
-              data-bs-target="#contact"
+              data-bs-target="#archive"
               type="button"
               role="tab"
-              aria-controls="contact"
+              aria-controls="archive"
               aria-selected="false"
               class="rounded-5 border-0 px-3 py-1 bg-pink"
             >
@@ -77,7 +63,10 @@
               <span class="ps-1 text-white"> Archived</span>
             </button>
           </li>
-          <button class="rounded-5 border-0 px-4 py-1 bg-blue text-white">
+          <button
+            class="rounded-5 border-0 px-4 py-1 bg-blue text-white"
+            onclick="addBoard()"
+          >
             New board
           </button>
           <button class="addNote bg-green">
@@ -94,21 +83,14 @@
         role="tabpanel"
         aria-labelledby="home-tab"
       >
-        ...
+        Board X
       </div>
+
       <div
         class="tab-pane fade"
-        id="profile"
+        id="archive"
         role="tabpanel"
-        aria-labelledby="profile-tab"
-      >
-        ...
-      </div>
-      <div
-        class="tab-pane fade"
-        id="contact"
-        role="tabpanel"
-        aria-labelledby="contact-tab"
+        aria-labelledby="archive-tab"
       >
         archive
       </div>
