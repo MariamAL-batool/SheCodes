@@ -1,7 +1,33 @@
+// tabs logic
+const tabs = document.querySelectorAll(".tab-btn");
+const tabs_content = document.querySelectorAll(".tab-content");
+tabs.forEach((tab, index) => {
+  tab.addEventListener("click", (e) => {
+    tabs_content.forEach((tab_content) => {
+      tab_content.classList.remove("active");
+    });
+    tabs_content[index].classList.add("active");
+  });
+});
+
 const boardButtons = document.getElementById("boardButtons");
 const boardData = document.getElementById("myTabContent");
-let boardCounter = 0;
-let boards = [];
+let boardCounter = 2;
+let boards = [
+  {
+    id: 0,
+    name: "Home",
+    creationDate: Date.now,
+    active: "active",
+  },
+  {
+    id: 1,
+    name: "archive",
+    creationDate: Date.now,
+    active: "",
+  },
+];
+
 const addBoard = () => {
   const boardName = prompt("Enter board name: ");
   if (boardName) {
@@ -36,98 +62,73 @@ const addBoard = () => {
 };
 
 const renderBoarders = () => {
-  boardButtons.innerHTML =
-    boards.length == 0
-      ? `<li class="nav-item py-0 my-0 ps-5" role="presentation">
-            <button
-              class="nav-link active text-d-gray px-4 rounded-top-3"
-              id="home-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#home"
-              type="button"
-              role="tab"
-              aria-controls="home"
-              aria-selected="true"
-            >
-Home            </button>
-          </li>`
-      : `<li class="nav-item py-0 my-0 ps-5" role="presentation">
-            <button
-              class="nav-link text-d-gray px-4 rounded-top-3"
-              id="home-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#home"
-              type="button"
-              role="tab"
-              aria-controls="home"
-              aria-selected="true"
-            >
-Home            </button>
-          </li>`;
+  boardButtons.innerHTML = "";
+  // boards.length == 0
+  //   ? `<li class=" py-0 my-0 ps-5">
+  //         <button
+  //           class="tab-btn active text-d-gray px-4 rounded-top-3"
+  //           type="button"
+  //         >
+  //           Home
+  //         </button>
+  //       </li>`
+  //   : `<li class=" py-0 my-0 ps-5">
+  //         <button
+  //           class="tab-btn  text-d-gray px-4 rounded-top-3"
+  //           type="button"
+  //         >
+  //           Home
+  //         </button>
+  //       </li>`;
   boardData.innerHTML =
-    boards.length == 0
-      ? ` <div
-        class="tab-pane fade show active "
-        id="home"
-        role="tabpanel"
-        aria-labelledby="home-tab"
-      >
-Home
-      </div>
-  
-      <div
-        class="tab-pane fade"
-        id="archive"
-        role="tabpanel"
-        aria-labelledby="archive-tab"
-      >
-        archive
-      </div>`
-      : ` <div
-        class="tab-pane fade   "
-        id="home"
-        role="tabpanel"
-        aria-labelledby="home-tab"
-      >
-Home
-      </div>
-  
-      <div
-        class="tab-pane fade"
-        id="archive"
-        role="tabpanel"
-        aria-labelledby="archive-tab"
-      >
-        archive
-      </div>`;
+    boards.length == 1
+      ? `
 
-  boards.forEach((board) => {
-    const boardButton = ` <li class="nav-item py-0 my-0 " role="presentation">
+      <div class="tab-content">archive</div>>`
+      : ` 
+
+      <div class="tab-content">archive</div>`;
+
+  boards.forEach((board, index) => {
+    const boardButton = `<li class=" py-0 my-0 ps-5">
             <button
-              class="nav-link ${board.active}  text-d-gray px-4 rounded-top-3"
-              id="${board.id}-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#${board.id}"
+              class="tab-btn ${board.active} active text-d-gray px-4 rounded-top-3"
               type="button"
-              role="tab"
-              aria-controls="${board.id}"
-              aria-selected="true"
+              onclick = "activate(${index})"
             >
              ${board.name}
-            </button>
-          </li>`;
+            </button>`;
 
-    const boardInnerData = ` <div
-        class="tab-pane fade ${board.active == "active" ? "active show" : ""}"
-        id="${board.id}"
-        role="tabpanel"
-        aria-labelledby="${board.id}-tab"
-      >
-                     ${board.name}
-
-      </div>`;
+    const boardInnerData = ` <div class="tab-content ${board.active} "> ${board.name}
+</div>
+`;
 
     boardData.insertAdjacentHTML("beforeend", boardInnerData);
-    boardButtons.insertAdjacentHTML("beforeend", boardButton);
+    board.id == 1
+      ? boardButtons.insertAdjacentHTML(
+          "beforeend",
+          `  <li class="nav-item" role="presentation">
+      <button
+        type="button"
+        class="tab-btn rounded-5 border-0 px-3 py-1 bg-pink"
+      >
+        <i class="fa-solid fa-trash"></i>
+        <span class="ps-1 text-white"> Archived</span>
+      </button>
+    </li>`
+        )
+      : boardButtons.insertAdjacentHTML("beforeend", boardButton);
   });
+};
+
+const activate = (index) => {
+  boards.forEach((board) => {
+    board.active = "";
+  });
+  boards[index].active = "active";
+  renderBoarders();
+  // tabs_content.forEach((tab_content) => {
+  //   tab_content.classList.remove("active");
+  // });
+  // tabs_content[index].classList.add("active");
 };
