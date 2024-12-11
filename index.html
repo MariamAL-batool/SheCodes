@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="./css/all.min.css" />
     <!-- custom css-->
     <link rel="stylesheet" href="./css/style.css" />
+    <script src="./js/main.js" defer></script>
+
     <title>Document</title>
   </head>
   <body>
@@ -38,7 +40,7 @@
             </button>
           </li>
           <button class="bg-blue" onclick="addBoard()">New board</button>
-          <button class="addNote bg-green">
+          <button class="add-note bg-green"  onclick="add_new_note()">
             <i class="fa-solid fa-plus"></i>
           </button>
         </div>
@@ -46,6 +48,6 @@
     </nav>
 
     <div class="tab-content-box" id="myTabContent"></div>
-    <script src="./js/main.js"></script>
+    <div class="board-body" id="board-body"></div>
   </body>
 </html>
