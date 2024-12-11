@@ -18,14 +18,14 @@
         role="tablist"
       >
         <div class="boards d-flex" id="boardButtons">
-          <li class="py-0 my-0 ps-5">
+          <!-- <li class="py-0 my-0 ps-5">
             <button
               class="tab-btn active text-d-gray px-4 rounded-top-3"
               type="button"
             >
               Home
             </button>
-          </li>
+          </li> -->
         </div>
 
         <div class="nav-buttons d-flex pe-4 gap-2 align-items-center pb-1">
@@ -44,6 +44,7 @@
             <button
               type="button"
               class="tab-btn rounded-5 border-0 px-3 py-1 bg-pink"
+              onclick="activeteArchive()"
             >
               <i class="fa-solid fa-trash"></i>
               <span class="ps-1 text-white"> Archived</span>
@@ -62,11 +63,7 @@
       </ul>
     </nav>
 
-    <div class="tab-content-box" id="myTabContent">
-      <div class="tab-content active" onclick="">Home</div>
-
-      <div class="tab-content">archive</div>
-    </div>
+    <div class="tab-content-box" id="myTabContent"></div>
     <script src="./js/main.js"></script>
   </body>
 </html>

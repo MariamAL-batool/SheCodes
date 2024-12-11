@@ -1,30 +1,14 @@
 // tabs logic
-const tabs = document.querySelectorAll(".tab-btn");
-const tabs_content = document.querySelectorAll(".tab-content");
-tabs.forEach((tab, index) => {
-  tab.addEventListener("click", (e) => {
-    tabs_content.forEach((tab_content) => {
-      tab_content.classList.remove("active");
-    });
-    tabs_content[index].classList.add("active");
-  });
-});
 
 const boardButtons = document.getElementById("boardButtons");
 const boardData = document.getElementById("myTabContent");
-let boardCounter = 2;
+let boardCounter = 1;
 let boards = [
   {
     id: 0,
     name: "Home",
     creationDate: Date.now,
     active: "active",
-  },
-  {
-    id: 1,
-    name: "archive",
-    creationDate: Date.now,
-    active: "",
   },
 ];
 
@@ -39,10 +23,7 @@ const addBoard = () => {
         break;
       }
     }
-    if (boardName === "Home") {
-      window.alert("Board already exists");
-      exist = true;
-    }
+
     if (!exist) {
       const newBoard = {
         id: boardCounter,
@@ -54,7 +35,6 @@ const addBoard = () => {
         board.active = "";
       });
       boards.push(newBoard);
-      console.log(boards);
       boardCounter++;
       renderBoarders();
     }
@@ -63,31 +43,6 @@ const addBoard = () => {
 
 const renderBoarders = () => {
   boardButtons.innerHTML = "";
-  // boards.length == 0
-  //   ? `<li class=" py-0 my-0 ps-5">
-  //         <button
-  //           class="tab-btn active text-d-gray px-4 rounded-top-3"
-  //           type="button"
-  //         >
-  //           Home
-  //         </button>
-  //       </li>`
-  //   : `<li class=" py-0 my-0 ps-5">
-  //         <button
-  //           class="tab-btn  text-d-gray px-4 rounded-top-3"
-  //           type="button"
-  //         >
-  //           Home
-  //         </button>
-  //       </li>`;
-  boardData.innerHTML =
-    boards.length == 1
-      ? `
-
-      <div class="tab-content">archive</div>>`
-      : ` 
-
-      <div class="tab-content">archive</div>`;
 
   boards.forEach((board, index) => {
     const boardButton = `<li class=" py-0 my-0 ps-5">
@@ -99,27 +54,14 @@ const renderBoarders = () => {
              ${board.name}
             </button>`;
 
-    const boardInnerData = ` <div class="tab-content ${board.active} "> ${board.name}
-</div>
-`;
-
-    boardData.insertAdjacentHTML("beforeend", boardInnerData);
-    board.id == 1
-      ? boardButtons.insertAdjacentHTML(
-          "beforeend",
-          `  <li class="nav-item" role="presentation">
-      <button
-        type="button"
-        class="tab-btn rounded-5 border-0 px-3 py-1 bg-pink"
-      >
-        <i class="fa-solid fa-trash"></i>
-        <span class="ps-1 text-white"> Archived</span>
-      </button>
-    </li>`
-        )
-      : boardButtons.insertAdjacentHTML("beforeend", boardButton);
+    if (board.active == "active") {
+      boardData.innerHTML = `<div class="tab-content ${board.active} "> ${board.name}</div>`;
+    }
+    boardButtons.insertAdjacentHTML("beforeend", boardButton);
   });
 };
+
+renderBoarders();
 
 const activate = (index) => {
   boards.forEach((board) => {
@@ -127,8 +69,8 @@ const activate = (index) => {
   });
   boards[index].active = "active";
   renderBoarders();
-  // tabs_content.forEach((tab_content) => {
-  //   tab_content.classList.remove("active");
-  // });
-  // tabs_content[index].classList.add("active");
+};
+
+const activeteArchive = () => {
+  boardData.innerHTML = `<div class="tab-content active">archive</div>`;
 };
