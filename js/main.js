@@ -1,5 +1,3 @@
-// tabs logic
-
 const boardButtons = document.getElementById("boardButtons");
 const boardData = document.getElementById("myTabContent");
 let boardCounter = 1;
@@ -45,9 +43,9 @@ const renderBoarders = () => {
   boardButtons.innerHTML = "";
 
   boards.forEach((board, index) => {
-    const boardButton = `<li class=" py-0 my-0 ps-5">
+    const boardButton = `<li class=" py-0 my-0 ">
             <button
-              class="tab-btn ${board.active} active text-d-gray px-4 rounded-top-3"
+              class="tab-btn ${board.active} text-d-gray"
               type="button"
               onclick = "activate(${index})"
             >
@@ -72,5 +70,10 @@ const activate = (index) => {
 };
 
 const activeteArchive = () => {
+  boards.forEach((board) => {
+    board.active = "";
+  });
+  renderBoarders();
+
   boardData.innerHTML = `<div class="tab-content active">archive</div>`;
 };

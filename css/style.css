@@ -1,3 +1,11 @@
+body {
+  margin: 0px;
+  padding: 0px;
+}
+button {
+  cursor: pointer;
+  border: none;
+}
 /* General classes */
 .bg-gray {
   background-color: #e2e2e2;
@@ -35,17 +43,32 @@ ul li {
 }
 
 /* start nav */
-.boards {
+nav {
+  margin: 0px;
+  padding-top: 3px;
+}
+
+.boards button {
+  margin: 0px;
+  border: none;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  padding: 8px 21px;
   font-size: 15px;
+  background-color: transparent;
+}
+
+.boards .active {
+  background-color: #ffffff;
 }
 .nav-buttons {
   font-size: 13px;
 }
 .addNote {
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
   border: 0px;
   font-size: 12px;
   display: flex;
@@ -54,9 +77,31 @@ ul li {
 }
 input {
   outline: none;
+  border: none;
+}
+.search {
+  background-color: #ffffff;
+  padding: 3px 30px 3px 13px;
+  border-radius: 1rem;
+  margin-right: 20px;
+}
+.search .fa-magnifying-glass {
+  margin-right: 5px;
+}
+.nav-buttons {
+  padding-right: 20px;
+  padding-bottom: 3px;
+  margin-bottom: 3px;
 }
 nav .nav-buttons .fa-trash {
   color: #a55353;
+  padding-right: 4px;
+}
+.nav-buttons button {
+  border-radius: 1rem;
+  padding: 6px 15px;
+  margin-left: 5px;
+  color: #ffffff;
 }
 .nav-buttons button:hover,
 .nav-buttons button:focus {
