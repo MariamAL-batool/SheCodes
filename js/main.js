@@ -1,7 +1,15 @@
 const boardButtons = document.getElementById("boardButtons");
 const boardData = document.getElementById("myTabContent");
-let boardCounter = 0;
-let boards = [];
+let boardCounter = 1;
+let boards = [
+  {
+    id: 0,
+    name: "Home",
+    creationDate: Date.now,
+    active: "active",
+  },
+];
+
 const addBoard = () => {
   const boardName = prompt("Enter board name: ");
   if (boardName) {
@@ -13,10 +21,7 @@ const addBoard = () => {
         break;
       }
     }
-    if (boardName === "Home") {
-      window.alert("Board already exists");
-      exist = true;
-    }
+
     if (!exist) {
       const newBoard = {
         id: boardCounter,
@@ -28,7 +33,6 @@ const addBoard = () => {
         board.active = "";
       });
       boards.push(newBoard);
-      console.log(boards);
       boardCounter++;
       renderBoarders();
     }
@@ -36,98 +40,40 @@ const addBoard = () => {
 };
 
 const renderBoarders = () => {
-  boardButtons.innerHTML =
-    boards.length == 0
-      ? `<li class="nav-item py-0 my-0 ps-5" role="presentation">
-            <button
-              class="nav-link active text-d-gray px-4 rounded-top-3"
-              id="home-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#home"
-              type="button"
-              role="tab"
-              aria-controls="home"
-              aria-selected="true"
-            >
-Home            </button>
-          </li>`
-      : `<li class="nav-item py-0 my-0 ps-5" role="presentation">
-            <button
-              class="nav-link text-d-gray px-4 rounded-top-3"
-              id="home-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#home"
-              type="button"
-              role="tab"
-              aria-controls="home"
-              aria-selected="true"
-            >
-Home            </button>
-          </li>`;
-  boardData.innerHTML =
-    boards.length == 0
-      ? ` <div
-        class="tab-pane fade show active "
-        id="home"
-        role="tabpanel"
-        aria-labelledby="home-tab"
-      >
-Home
-      </div>
-  
-      <div
-        class="tab-pane fade"
-        id="archive"
-        role="tabpanel"
-        aria-labelledby="archive-tab"
-      >
-        archive
-      </div>`
-      : ` <div
-        class="tab-pane fade   "
-        id="home"
-        role="tabpanel"
-        aria-labelledby="home-tab"
-      >
-Home
-      </div>
-  
-      <div
-        class="tab-pane fade"
-        id="archive"
-        role="tabpanel"
-        aria-labelledby="archive-tab"
-      >
-        archive
-      </div>`;
+  boardButtons.innerHTML = "";
 
-  boards.forEach((board) => {
-    const boardButton = ` <li class="nav-item py-0 my-0 " role="presentation">
+  boards.forEach((board, index) => {
+    const boardButton = `<li class=" py-0 my-0 ">
             <button
-              class="nav-link ${board.active}  text-d-gray px-4 rounded-top-3"
-              id="${board.id}-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#${board.id}"
+              class="tab-btn ${board.active} text-d-gray"
               type="button"
-              role="tab"
-              aria-controls="${board.id}"
-              aria-selected="true"
+              onclick = "activate(${index})"
             >
              ${board.name}
-            </button>
-          </li>`;
+            </button>`;
 
-    const boardInnerData = ` <div
-        class="tab-pane fade ${board.active == "active" ? "active show" : ""}"
-        id="${board.id}"
-        role="tabpanel"
-        aria-labelledby="${board.id}-tab"
-      >
-                     ${board.name}
-
-      </div>`;
-
-    boardData.insertAdjacentHTML("beforeend", boardInnerData);
+    if (board.active == "active") {
+      boardData.innerHTML = `<div class="tab-content ${board.active} "> ${board.name}</div>`;
+    }
     boardButtons.insertAdjacentHTML("beforeend", boardButton);
   });
+};
+
+renderBoarders();
+
+const activate = (index) => {
+  boards.forEach((board) => {
+    board.active = "";
+  });
+  boards[index].active = "active";
+  renderBoarders();
+};
+
+const activeteArchive = () => {
+  boards.forEach((board) => {
+    board.active = "";
+  });
+  renderBoarders();
+
+  boardData.innerHTML = `<div class="tab-content active">archive</div>`;
 };
