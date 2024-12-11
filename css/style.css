@@ -64,7 +64,7 @@ nav {
 .nav-buttons {
   font-size: 13px;
 }
-.addNote {
+.add-note {
   border-radius: 50%;
   width: 28px;
   height: 28px;
@@ -115,5 +115,25 @@ nav .nav-buttons .fa-trash {
 .tab-content-box .tab-content.active {
   display: block;
 }
+.note {
+  width: 100px;
+  height: 100px;
+  background-color: #efefef;
+  border: transparent;
+  margin: 5px;
+  font-size: 6px;
+  box-shadow: 1px 1px 2px gray;
+}
 
+input::placeholder { /*Timestamp Design*/
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  color: rgb(152, 150, 150);
+}
 /* end nav */
+
+.board-body{
+  width: auto;
+  height: auto;
+}
