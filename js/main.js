@@ -85,15 +85,75 @@ const add_new_note = () => { //defines note object and pushes it to notes array
   
 }
 const renderNotes = (notes) => {
-  boardBody.innerHTML = " ";
+  boardBody.innerHTML = ""; // Clear previous notes
+
   notes.forEach((note) => {
+    // Set the default color if not already set
+    if (!note.color) {
+      note.color = "#efefef"; // Default note color
+    }
 
-    boardBody.insertAdjacentHTML('afterbegin', `<input type="text" class="note" id=${note.id} placeholder="Added On: ${note.date} ">`);
+    const noteHTML = `
+      <div class="note" id="note-${note.id}" style="position: relative; background-color: ${note.color};">
+        <input 
+          type="text" 
+          placeholder="Enter your note..." 
+          style="width: 100%; height: 75%; border: none; outline: none; background: transparent;"
+        >
+        <div class="hover-controls" style="display: none; position: absolute; bottom: 5px; right: 5px;">
+          <div class="color-dot red" onclick="changeNoteColor('note-${note.id}', '#f28b82')"></div>
+          <div class="color-dot green" onclick="changeNoteColor('note-${note.id}', '#ccff90')"></div>
+          <div class="color-dot blue" onclick="changeNoteColor('note-${note.id}', '#aecbfa')"></div>
+          <div class="color-dot gray" onclick="changeNoteColor('note-${note.id}', '#e8eaed')"></div>
+        </div>
+        <div 
+          class="note-date" 
+          style="position: absolute; bottom: 5px; left: 5px; font-size: 10px; color: gray; transition: all 0.3s ease;"
+        >
+          Added On: ${note.date}
+        </div>
+      </div>
+    `;
 
+    boardBody.insertAdjacentHTML('beforeend', noteHTML);
+
+    // Add hover functionality
+    const noteElement = document.getElementById(`note-${note.id}`);
+    const hoverControls = noteElement.querySelector('.hover-controls');
+    const noteDate = noteElement.querySelector('.note-date');
+
+    noteElement.addEventListener('mouseenter', () => {
+      hoverControls.style.display = 'flex';
+      noteDate.style.bottom = '35px'; // Move the date above the color dots
+    });
+
+    noteElement.addEventListener('mouseleave', () => {
+      hoverControls.style.display = 'none';
+      noteDate.style.bottom = '5px'; // Reset the date position
+    });
+  });
+};
+
+// Update the background color of a specific note and save it to the note data
+const changeNoteColor = (noteId, color) => {
+  // Find the note in the active board's notes
+  boards.forEach((board) => {
+    if (board.active === "active") {
+      const note = board.notes.find((n) => `note-${n.id}` === noteId);
+      if (note) {
+        note.color = color; // Update the note's color in the data
+      }
+    }
   });
 
-
+  // Update the UI for the specific note
+  const noteElement = document.getElementById(noteId);
+  if (noteElement) {
+    noteElement.style.backgroundColor = color;
+  }
 };
+
+
 const activate = (index) => {
   boards.forEach((board) => {
     board.active = "";
