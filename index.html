@@ -1,54 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- fontawesome 6.4-->
-    <link rel="stylesheet" href="./css/all.min.css" />
-    <!-- custom css-->
-    <link rel="stylesheet" href="./css/style.css" />
-    <script src="./js/main.js" defer></script>
 
-    <title>Sticky note app</title>
-  </head>
-  <body>
-    <nav class="pt-4 bg-gray">
-      <ul class="nav d-flex justify-content-between align-items-center">
-        <div class="boards d-flex" id="boardButtons"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- fontawesome 6.4-->
+  <link rel="stylesheet" href="./css/all.min.css" />
+  <!-- custom css-->
+  <link rel="stylesheet" href="./css/style.css" />
+  <script src="./js/main.js" defer></script>
 
-        <div class="nav-buttons d-flex align-items-center">
-          <div class="search bg-white">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input
-              type="search"
-              name="search"
-              id="search"
-              placeholder="Search a note"
-              class="border-0"
-               oninput="search(event)"
-            />
-          </div>
+  <title>Sticky note app</title>
+</head>
 
-          <li>
-            <button
-              type="button"
-              class="tab-btn bg-pink"
-              onclick="activeteArchive()"
-            >
-              <i class="fa-solid fa-trash"></i>
-              <span> Archived</span>
-            </button>
-          </li>
-          <button class="bg-blue" onclick="addBoard()">New board</button>
-          <button class="add-note bg-green" onclick="add_new_note()">
-            <i class="fa-solid fa-plus"></i>
-          </button>
+<body>
+  <nav class="pt-4 bg-gray">
+    <ul class="nav d-flex justify-content-between align-items-center">
+      <div class="boards d-flex" id="boardButtons"></div>
+
+      <div class="nav-buttons d-flex align-items-center">
+        <div class="search bg-white">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="search" name="search" id="search" placeholder="Search a note" class="border-0"
+            oninput="search(event)" />
         </div>
-      </ul>
-    </nav>
 
-    <div class="tab-content-box" id="myTabContent"></div>
-    <div class="board-body" id="board-body"></div>
-  </body>
+        <li>
+          <button type="button" class="tab-btn bg-pink" onclick="activeteArchive()">
+            <i class="fa-solid fa-trash"></i>
+            <span> Archived</span>
+          </button>
+        </li>
+        <button class="bg-blue" onclick="addBoard()">New board</button>
+        <button class="add-note bg-green" onclick="add_new_note()">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+    </ul>
+  </nav>
+
+  <div class="tab-content-box" id="myTabContent"></div>
+  <div class="board-body" id="board-body"></div>
+</body>
+
 </html>
