@@ -57,9 +57,7 @@ const renderBoarders = () => {
              ${board.name}
             </button>`;
 
-    if (board.active == "active") {
-      boardData.innerHTML = `<div class="tab-content ${board.active} "> ${board.name}</div>`;
-    }
+
     boardButtons.insertAdjacentHTML("beforeend", boardButton);
     if (board.notes.length >= 1 && board.active == "active") {
       renderNotes(board.notes);
@@ -74,6 +72,7 @@ const add_new_note = () => {
 
   note = {
     id: Date.now(),
+    title: "Enter your note...",
     date: date(),
     color: "#e8eaed",
   };
@@ -92,7 +91,7 @@ const renderNotes = (notes) => {
     const noteHTML = `
       <div class="note" id="note-${note.id}" style=" background-color: ${note.color};">
 
-        <input type="text" placeholder="Enter your note..." class="note-input">
+       <textarea placeholder="${note.title}" class="note-input" id="note"  "></textarea>
 
         <div class="note-date"> Added On: ${note.date} </div>
 
@@ -123,6 +122,12 @@ const renderNotes = (notes) => {
       hoverControls.style.display = "none";
       noteDate.style.bottom = "5px"; 
     });
+
+    //Save text written in note 
+    noteElement.addEventListener("input", (e) => {
+      note.title = e.target.value;
+    })
+
   });
 };
 
@@ -164,7 +169,7 @@ const renderArchive = () => {
   archive.forEach((note) => {
     const noteHTML = `
       <div class="note" style="background-color: ${note.color || "#e8eaed"};">
-        <input type="text" value="${note.content || 'Archived note'}" disabled class="note-input">
+         <textarea  placeholder="${note.title }" disabled class="note-input"></textarea>
         <div class="note-date"> Archived On: ${note.date} </div>
       </div>
     `;
@@ -188,6 +193,21 @@ const activate = (index) => {
   boards[index].active = "active";
   renderBoarders();
 };
+
+const search = (event) => {
+  const term = event.target.value.toLowerCase();
+  boards.forEach((board) => {
+    if (board.active == "active" && term.length >= 1) {
+      const filteredItems = board.notes.filter(note => note.title.toLowerCase().includes(term));
+      renderNotes(filteredItems);
+    }
+    else {
+      renderBoarders();
+    }
+  });
+
+}
+
 
 const date = () => {
   var currentDate = new Date();
