@@ -161,7 +161,7 @@ nav .nav-buttons .fa-trash {
   display: none; 
   position: absolute; 
   bottom: 5px; 
-  right: 5px;
+  left: 5px;
 }
 .color-dot {
   width: 12px;
@@ -182,7 +182,24 @@ nav .nav-buttons .fa-trash {
 .color-dot.gray {
   background-color: #e8eaed;
 }
-
+.delete-btn {
+  width: 15px;
+  height: 15px;
+  background-color: #ee4539;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  position: absolute;
+  left:105px;
+}
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
 input::placeholder {
   /*Timestamp Design*/
   position: fixed;

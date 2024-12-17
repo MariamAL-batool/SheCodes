@@ -12,7 +12,7 @@ let boards = [
     notes: [],
   },
 ];
-
+let archive = [];
 const addBoard = () => {
   const boardName = prompt("Enter board name: ");
   if (boardName) {
@@ -75,6 +75,7 @@ const add_new_note = () => {
   note = {
     id: Date.now(),
     date: date(),
+    color: "#e8eaed",
   };
   boards.forEach((board) => {
     if (board.active == "active") {
@@ -100,6 +101,8 @@ const renderNotes = (notes) => {
           <div class="color-dot red" onclick="changeNoteColor('note-${note.id}', '#FEAEAE')"></div>
           <div class="color-dot green" onclick="changeNoteColor('note-${note.id}', '#CDFCB6')"></div>
           <div class="color-dot blue" onclick="changeNoteColor('note-${note.id}', '#B6D7FC')"></div>
+          <button class="delete-btn" onclick="deleteNote(${note.id})">x</button>
+
         </div>
       </div>
     `;
@@ -113,12 +116,12 @@ const renderNotes = (notes) => {
 
     noteElement.addEventListener("mouseenter", () => {
       hoverControls.style.display = "flex";
-      noteDate.style.bottom = "35px"; // Move the date above the color dots
+      noteDate.style.bottom = "35px"; 
     });
 
     noteElement.addEventListener("mouseleave", () => {
       hoverControls.style.display = "none";
-      noteDate.style.bottom = "5px"; // Reset the date position
+      noteDate.style.bottom = "5px"; 
     });
   });
 };
@@ -141,6 +144,42 @@ const changeNoteColor = (noteId, color) => {
     noteElement.style.backgroundColor = color;
   }
 };
+// Delete a note and move it to the archive
+const deleteNote = (noteId) => {
+  boards.forEach((board) => {
+    if (board.active === "active") {
+      const noteIndex = board.notes.findIndex((note) => note.id === noteId);
+      if (noteIndex !== -1) {
+        const noteToArchive = board.notes.splice(noteIndex, 1)[0];
+        noteToArchive.content = document.getElementById(`note-${noteId}`).querySelector('.note-input').value; // Save user input
+        archive.push(noteToArchive); // Move to archive
+        renderBoarders();
+      }
+    }
+  });
+};
+
+const renderArchive = () => {
+  boardBody.innerHTML = ""; // Clear board body
+  archive.forEach((note) => {
+    const noteHTML = `
+      <div class="note" style="background-color: ${note.color || "#e8eaed"};">
+        <input type="text" value="${note.content || 'Archived note'}" disabled class="note-input">
+        <div class="note-date"> Archived On: ${note.date} </div>
+      </div>
+    `;
+    boardBody.insertAdjacentHTML("beforeend", noteHTML);
+  });
+};
+
+
+const activeteArchive = () => {
+  boards.forEach((board) => {
+    board.active = "";
+  });
+  boardData.innerHTML = `<div class="tab-content active">archive</div>`;
+  renderArchive();
+};
 
 const activate = (index) => {
   boards.forEach((board) => {
@@ -150,17 +189,7 @@ const activate = (index) => {
   renderBoarders();
 };
 
-const activeteArchive = () => {
-  boards.forEach((board) => {
-    board.active = "";
-  });
-  renderBoarders();
-
-  boardData.innerHTML = `<div class="tab-content active">archive</div>`;
-};
-
 const date = () => {
-  //Returns today's date
   var currentDate = new Date();
   var year = currentDate.getFullYear();
   var month = currentDate.getMonth();
