@@ -115,12 +115,12 @@ const renderNotes = (notes) => {
 
     noteElement.addEventListener("mouseenter", () => {
       hoverControls.style.display = "flex";
-      noteDate.style.bottom = "35px"; 
+      noteDate.style.bottom = "35px";
     });
 
     noteElement.addEventListener("mouseleave", () => {
       hoverControls.style.display = "none";
-      noteDate.style.bottom = "5px"; 
+      noteDate.style.bottom = "5px";
     });
 
     //Save text written in note 
@@ -169,7 +169,7 @@ const renderArchive = () => {
   archive.forEach((note) => {
     const noteHTML = `
       <div class="note" style="background-color: ${note.color || "#e8eaed"};">
-         <textarea  placeholder="${note.title }" disabled class="note-input"></textarea>
+         <textarea  placeholder="${note.title}" disabled class="note-input"></textarea>
         <div class="note-date"> Archived On: ${note.date} </div>
       </div>
     `;
