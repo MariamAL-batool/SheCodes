@@ -69,27 +69,41 @@ renderBoarders();
 
 const add_new_note = () => {
   //defines note object and pushes it to notes array
+  //Random position 
+  const bodyWidth = window.innerWidth - 300; 
+  const bodyHeight = window.innerHeight - 300; 
+
+  const randomLeft = Math.floor(Math.random() * bodyWidth); 
+  const randomTop = Math.floor(Math.random() * bodyHeight); 
 
   note = {
     id: Date.now(),
     title: "Enter your note...",
     date: date(),
     color: "#e8eaed",
+    left: randomLeft, 
+    top: randomTop,  
   };
   boards.forEach((board) => {
     if (board.active == "active") {
       board.notes.push(note);
     }
   });
-
+  
+  renderNotes(boards.find((board) => board.active === "active").notes);
   renderBoarders();
 };
+
+
+
+
 const renderNotes = (notes) => {
   boardBody.innerHTML = ""; // Clear previous notes
 
   notes.forEach((note) => {
     const noteHTML = `
-      <div class="note" id="note-${note.id}" style=" background-color: ${note.color};">
+      <div class="note" id="note-${note.id}" style=" background-color: ${note.color}; left: ${note.left}px; 
+               top: ${note.top}px; ">
 
        <textarea placeholder="${note.title}" class="note-input" id="note"  "></textarea>
 
@@ -110,9 +124,48 @@ const renderNotes = (notes) => {
 
     // Add hover functionality
     const noteElement = document.getElementById(`note-${note.id}`);
+    noteElement.addEventListener('mousedown', (e) => mouseDown(e, note, noteElement));
     const hoverControls = noteElement.querySelector(".hover-controls");
     const noteDate = noteElement.querySelector(".note-date");
+    function mouseDown(e) {
+      const computedStyle = window.getComputedStyle(noteElement);
+      const isResizing =
+        e.clientX >= noteElement.offsetLeft + parseInt(computedStyle.width, 10) - 10 &&
+        e.clientY >= noteElement.offsetTop + parseInt(computedStyle.height, 10) - 10;
+    
+      if (!isResizing) {
+        isDragging = true;
+    
+       
+        startX = e.clientX - noteElement.offsetLeft;
+        startY = e.clientY - noteElement.offsetTop;
+    
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+      }
+    }
+    
+    function onMouseMove(e) {
+      if (isDragging) {
+        const newX = e.clientX - startX;
+        const newY = e.clientY - startY;
+  
+        noteElement.style.left = newX + "px";
+        noteElement.style.top = newY + "px";
+  
+       
+        note.left = newX;
+        note.top = newY;
+      }
+    }
+  
+    
 
+function onMouseUp() {
+  isDragging = false;
+  document.removeEventListener('mousemove', onMouseMove);
+  document.removeEventListener('mouseup', onMouseUp);
+}
     noteElement.addEventListener("mouseenter", () => {
       hoverControls.style.display = "flex";
       noteDate.style.bottom = "35px";
@@ -231,3 +284,4 @@ const date = () => {
   var dateStamp = monthNames[month] + " " + day + "," + year;
   return dateStamp;
 };
+

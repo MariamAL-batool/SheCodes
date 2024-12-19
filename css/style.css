@@ -148,6 +148,8 @@ nav .nav-buttons .fa-trash {
 }
 
 .note {
+  min-width: 120px;
+  min-height: 120px;
   width: 120px;
   height: 120px;
   background-color: #efefef;
@@ -155,8 +157,12 @@ nav .nav-buttons .fa-trash {
   margin: 10px;
   font-size: 5px;
   box-shadow: 1px 1px 2px gray;
-  position: relative;
   padding: 5px;
+  position: absolute;
+  resize: both;
+  overflow :hidden;
+  /* left:10px;
+  top:10px; */
 
 }
 
