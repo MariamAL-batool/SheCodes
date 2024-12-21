@@ -83,6 +83,7 @@ const add_new_note = () => {
     title: "Enter your note...",
     date: date(),
     color: "#e8eaed",
+    changeCounter: 0,
     left: randomLeft,
     top: randomTop,
   };
@@ -101,18 +102,32 @@ const renderNotes = (notes) => {
 
   notes.forEach((note) => {
     const noteHTML = `
-      <div class="note" id="note-${note.id}" style=" background-color: ${note.color}; left: ${note.left}px; 
+      <div class="note" id="note-${note.id}" style=" background-color: ${
+      note.color
+    }; left: ${note.left}px; 
                top: ${note.top}px; ">
 
-       <textarea placeholder="${note.title}" class="note-input" id="note"  "></textarea>
+       <textarea onchange="editNoteDate(${note.id})" placeholder="${
+      note.title
+    }" class="note-input" id="note"  "></textarea>
 
-        <div class="note-date"> Added On: ${note.date} </div>
+        <div class="note-date"> ${
+          note.changeCounter > 1 ? "Edited On: " : "Added On: "
+        } ${note.date} </div>
 
         <div class="hover-controls">
-          <div class="color-dot gray" onclick="changeNoteColor('note-${note.id}', '#e8eaed')"></div>
-          <div class="color-dot red" onclick="changeNoteColor('note-${note.id}', '#FEAEAE')"></div>
-          <div class="color-dot green" onclick="changeNoteColor('note-${note.id}', '#CDFCB6')"></div>
-          <div class="color-dot blue" onclick="changeNoteColor('note-${note.id}', '#B6D7FC')"></div>
+          <div class="color-dot gray" onclick="changeNoteColor('note-${
+            note.id
+          }', '#e8eaed')"></div>
+          <div class="color-dot red" onclick="changeNoteColor('note-${
+            note.id
+          }', '#FEAEAE')"></div>
+          <div class="color-dot green" onclick="changeNoteColor('note-${
+            note.id
+          }', '#CDFCB6')"></div>
+          <div class="color-dot blue" onclick="changeNoteColor('note-${
+            note.id
+          }', '#B6D7FC')"></div>
           <button class="delete-btn" onclick="deleteNote(${note.id})">x</button>
 
         </div>
@@ -180,6 +195,29 @@ const renderNotes = (notes) => {
       note.title = e.target.value;
     });
   });
+};
+
+const editNoteDate = (noteId) => {
+  let boardId;
+  // find board of the note
+  boards.forEach((board) => {
+    if (board.active == "active") {
+      boardId = board.id;
+    }
+  });
+  // counter to check if the note was edited before or not
+  changeCounter = ++boards[boardId].notes.find((note) => note.id === noteId)
+    .changeCounter;
+
+  currentNoteDate = document
+    .getElementById(`note-${noteId}`)
+    .getElementsByClassName("note-date");
+
+  if (changeCounter > 1) {
+    boards[boardId].notes.find((note) => note.id === noteId).date = date();
+    currentNoteDate[0].innerHTML = `Edited On:  ${note.date}`;
+    changeCounter = 0;
+  }
 };
 
 // Update the background color of a specific note and save it to the note data
