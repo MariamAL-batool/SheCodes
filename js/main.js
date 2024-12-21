@@ -3,6 +3,7 @@ const boardData = document.getElementById("myTabContent");
 const boardBody = document.getElementById("board-body");
 let boardCounter = 1;
 
+// initialize boards with Home board
 let boards = [
   {
     id: 0,
@@ -13,18 +14,20 @@ let boards = [
   },
 ];
 let archive = [];
+//function to add new board
 const addBoard = () => {
   const boardName = prompt("Enter board name: ");
+  // check if the board exist
   if (boardName) {
     let exist = false;
     for (const board of boards) {
       if (board.name === boardName) {
-        window.alert("Board already exists");
+        window.alert("Board already exist");
         exist = true;
         break;
       }
     }
-
+    // create new board
     if (!exist) {
       const newBoard = {
         id: boardCounter,
@@ -46,7 +49,7 @@ const addBoard = () => {
 const renderBoarders = () => {
   boardButtons.innerHTML = "";
   boardBody.innerHTML = " ";
-
+  // for loop to render the boards' buttons into the HTML page
   boards.forEach((board, index) => {
     const boardButton = `<li class=" py-0 my-0 ">
             <button
@@ -56,7 +59,6 @@ const renderBoarders = () => {
             >
              ${board.name}
             </button>`;
-
 
     boardButtons.insertAdjacentHTML("beforeend", boardButton);
     if (board.notes.length >= 1 && board.active == "active") {
@@ -69,33 +71,30 @@ renderBoarders();
 
 const add_new_note = () => {
   //defines note object and pushes it to notes array
-  //Random position 
-  const bodyWidth = window.innerWidth - 300; 
-  const bodyHeight = window.innerHeight - 300; 
+  //Random position
+  const bodyWidth = window.innerWidth - 300;
+  const bodyHeight = window.innerHeight - 300;
 
-  const randomLeft = Math.floor(Math.random() * bodyWidth); 
-  const randomTop = Math.floor(Math.random() * bodyHeight); 
+  const randomLeft = Math.floor(Math.random() * bodyWidth);
+  const randomTop = Math.floor(Math.random() * bodyHeight);
 
   note = {
     id: Date.now(),
     title: "Enter your note...",
     date: date(),
     color: "#e8eaed",
-    left: randomLeft, 
-    top: randomTop,  
+    left: randomLeft,
+    top: randomTop,
   };
   boards.forEach((board) => {
     if (board.active == "active") {
       board.notes.push(note);
     }
   });
-  
+
   renderNotes(boards.find((board) => board.active === "active").notes);
   renderBoarders();
 };
-
-
-
 
 const renderNotes = (notes) => {
   boardBody.innerHTML = ""; // Clear previous notes
@@ -124,48 +123,48 @@ const renderNotes = (notes) => {
 
     // Add hover functionality
     const noteElement = document.getElementById(`note-${note.id}`);
-    noteElement.addEventListener('mousedown', (e) => mouseDown(e, note, noteElement));
+    noteElement.addEventListener("mousedown", (e) =>
+      mouseDown(e, note, noteElement)
+    );
     const hoverControls = noteElement.querySelector(".hover-controls");
     const noteDate = noteElement.querySelector(".note-date");
     function mouseDown(e) {
       const computedStyle = window.getComputedStyle(noteElement);
       const isResizing =
-        e.clientX >= noteElement.offsetLeft + parseInt(computedStyle.width, 10) - 10 &&
-        e.clientY >= noteElement.offsetTop + parseInt(computedStyle.height, 10) - 10;
-    
+        e.clientX >=
+          noteElement.offsetLeft + parseInt(computedStyle.width, 10) - 10 &&
+        e.clientY >=
+          noteElement.offsetTop + parseInt(computedStyle.height, 10) - 10;
+
       if (!isResizing) {
         isDragging = true;
-    
-       
+
         startX = e.clientX - noteElement.offsetLeft;
         startY = e.clientY - noteElement.offsetTop;
-    
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
+
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseup", onMouseUp);
       }
     }
-    
+
     function onMouseMove(e) {
       if (isDragging) {
         const newX = e.clientX - startX;
         const newY = e.clientY - startY;
-  
+
         noteElement.style.left = newX + "px";
         noteElement.style.top = newY + "px";
-  
-       
+
         note.left = newX;
         note.top = newY;
       }
     }
-  
-    
 
-function onMouseUp() {
-  isDragging = false;
-  document.removeEventListener('mousemove', onMouseMove);
-  document.removeEventListener('mouseup', onMouseUp);
-}
+    function onMouseUp() {
+      isDragging = false;
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+    }
     noteElement.addEventListener("mouseenter", () => {
       hoverControls.style.display = "flex";
       noteDate.style.bottom = "35px";
@@ -176,11 +175,10 @@ function onMouseUp() {
       noteDate.style.bottom = "5px";
     });
 
-    //Save text written in note 
+    //Save text written in note
     noteElement.addEventListener("input", (e) => {
       note.title = e.target.value;
-    })
-
+    });
   });
 };
 
@@ -209,7 +207,9 @@ const deleteNote = (noteId) => {
       const noteIndex = board.notes.findIndex((note) => note.id === noteId);
       if (noteIndex !== -1) {
         const noteToArchive = board.notes.splice(noteIndex, 1)[0];
-        noteToArchive.content = document.getElementById(`note-${noteId}`).querySelector('.note-input').value; // Save user input
+        noteToArchive.content = document
+          .getElementById(`note-${noteId}`)
+          .querySelector(".note-input").value; // Save user input
         archive.push(noteToArchive); // Move to archive
         renderBoarders();
       }
@@ -222,7 +222,9 @@ const renderArchive = () => {
   archive.forEach((note) => {
     const noteHTML = `
       <div class="note" style="background-color: ${note.color || "#e8eaed"};">
-         <textarea  placeholder="${note.title}" disabled class="note-input"></textarea>
+         <textarea  placeholder="${
+           note.title
+         }" disabled class="note-input"></textarea>
         <div class="note-date"> Archived On: ${note.date} </div>
       </div>
     `;
@@ -230,7 +232,7 @@ const renderArchive = () => {
   });
 };
 
-
+// function to activate the archive when the user clicks on its button
 const activeteArchive = () => {
   boards.forEach((board) => {
     board.active = "";
@@ -251,16 +253,15 @@ const search = (event) => {
   const term = event.target.value.toLowerCase();
   boards.forEach((board) => {
     if (board.active == "active" && term.length >= 1) {
-      const filteredItems = board.notes.filter(note => note.title.toLowerCase().includes(term));
+      const filteredItems = board.notes.filter((note) =>
+        note.title.toLowerCase().includes(term)
+      );
       renderNotes(filteredItems);
-    }
-    else {
+    } else {
       renderBoarders();
     }
   });
-
-}
-
+};
 
 const date = () => {
   var currentDate = new Date();
@@ -284,4 +285,3 @@ const date = () => {
   var dateStamp = monthNames[month] + " " + day + "," + year;
   return dateStamp;
 };
-
