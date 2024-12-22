@@ -3,7 +3,7 @@ const boardData = document.getElementById("myTabContent");
 const boardBody = document.getElementById("board-body");
 let boardCounter = 1;
 
-// initialize boards with Home board
+// initialize boards with default Home board
 let boards = [
   {
     id: 0,
@@ -14,10 +14,11 @@ let boards = [
   },
 ];
 let archive = [];
+
 //function to add new board
 const addBoard = () => {
   const boardName = prompt("Enter board name: ");
-  // check if the board exist
+  // check if the board already exists
   if (boardName) {
     let exist = false;
     for (const board of boards) {
@@ -49,7 +50,7 @@ const addBoard = () => {
 const renderBoarders = () => {
   boardButtons.innerHTML = "";
   boardBody.innerHTML = " ";
-  // for loop to render the boards' buttons into the HTML page
+  //  loop to render the boards tabs in the page
   boards.forEach((board, index) => {
     const boardButton = `<li class=" py-0 my-0 ">
             <button
@@ -65,16 +66,16 @@ const renderBoarders = () => {
       renderNotes(board.notes);
     }
   });
+
 };
 
 renderBoarders();
 
-const add_new_note = () => {
-  //defines note object and pushes it to notes array
-  //Random position
-  const bodyWidth = window.innerWidth - 300;
-  const bodyHeight = window.innerHeight - 300;
-
+const add_new_note = () => {//defines note object and pushes it into notes array in the active board
+ 
+  //Random note position
+  const bodyWidth = window.innerWidth - 67.95;  //67.59 is navbar height, to avoid note display above it
+  const bodyHeight = window.innerHeight - 67.95;
   const randomLeft = Math.floor(Math.random() * bodyWidth);
   const randomTop = Math.floor(Math.random() * bodyHeight);
 
@@ -93,41 +94,33 @@ const add_new_note = () => {
     }
   });
 
-  renderNotes(boards.find((board) => board.active === "active").notes);
   renderBoarders();
 };
 
-const renderNotes = (notes) => {
+const renderNotes = (notes) => { //render notes in the active board
   boardBody.innerHTML = ""; // Clear previous notes
 
   notes.forEach((note) => {
     const noteHTML = `
-      <div class="note" id="note-${note.id}" style=" background-color: ${
-      note.color
-    }; left: ${note.left}px; 
+      <div class="note" id="note-${note.id}" style=" background-color: ${note.color
+      }; left: ${note.left}px; 
                top: ${note.top}px; ">
 
-       <textarea onchange="editNoteDate(${note.id})" placeholder="${
-      note.title
-    }" class="note-input" id="note"  "></textarea>
+       <textarea onchange="editNoteDate(${note.id})" placeholder="${note.title
+      }" class="note-input" id="note"  "></textarea>
 
-        <div class="note-date"> ${
-          note.changeCounter > 1 ? "Edited On: " : "Added On: "
-        } ${note.date} </div>
+        <div class="note-date"> ${note.changeCounter > 1 ? "Edited On: " : "Added On: "
+      } ${note.date} </div>
 
         <div class="hover-controls">
-          <div class="color-dot gray" onclick="changeNoteColor('note-${
-            note.id
-          }', '#e8eaed')"></div>
-          <div class="color-dot red" onclick="changeNoteColor('note-${
-            note.id
-          }', '#FEAEAE')"></div>
-          <div class="color-dot green" onclick="changeNoteColor('note-${
-            note.id
-          }', '#CDFCB6')"></div>
-          <div class="color-dot blue" onclick="changeNoteColor('note-${
-            note.id
-          }', '#B6D7FC')"></div>
+          <div class="color-dot gray" onclick="changeNoteColor('note-${note.id
+      }', '#e8eaed')"></div>
+          <div class="color-dot red" onclick="changeNoteColor('note-${note.id
+      }', '#FEAEAE')"></div>
+          <div class="color-dot green" onclick="changeNoteColor('note-${note.id
+      }', '#CDFCB6')"></div>
+          <div class="color-dot blue" onclick="changeNoteColor('note-${note.id
+      }', '#B6D7FC')"></div>
           <button class="delete-btn" onclick="deleteNote(${note.id})">x</button>
 
         </div>
@@ -143,13 +136,15 @@ const renderNotes = (notes) => {
     );
     const hoverControls = noteElement.querySelector(".hover-controls");
     const noteDate = noteElement.querySelector(".note-date");
+
+    //allow note resize and drag-drop             
     function mouseDown(e) {
       const computedStyle = window.getComputedStyle(noteElement);
       const isResizing =
         e.clientX >=
-          noteElement.offsetLeft + parseInt(computedStyle.width, 10) - 10 &&
+        noteElement.offsetLeft + parseInt(computedStyle.width, 10) - 10 &&
         e.clientY >=
-          noteElement.offsetTop + parseInt(computedStyle.height, 10) - 10;
+        noteElement.offsetTop + parseInt(computedStyle.height, 10) - 10;
 
       if (!isResizing) {
         isDragging = true;
@@ -232,7 +227,7 @@ const changeNoteColor = (noteId, color) => {
     }
   });
 
-  // Update the UI for the specific note
+  // Update the color of the  note
   const noteElement = document.getElementById(noteId);
   if (noteElement) {
     noteElement.style.backgroundColor = color;
@@ -256,21 +251,11 @@ const deleteNote = (noteId) => {
 };
 
 const renderArchive = () => {
-  boardBody.innerHTML = ""; // Clear board body
-  archive.forEach((note) => {
-    const noteHTML = `
-      <div class="note" style="background-color: ${note.color || "#e8eaed"};">
-         <textarea  placeholder="${
-           note.title
-         }" disabled class="note-input"></textarea>
-        <div class="note-date"> Archived On: ${note.date} </div>
-      </div>
-    `;
-    boardBody.insertAdjacentHTML("beforeend", noteHTML);
-  });
+  boardBody.innerHTML = ""; 
+  renderNotes(archive);
 };
 
-// function to activate the archive when the user clicks on its button
+// function to activate the archive when the user clicks on it
 const activeteArchive = () => {
   boards.forEach((board) => {
     board.active = "";
@@ -287,7 +272,7 @@ const activate = (index) => {
   renderBoarders();
 };
 
-const search = (event) => {
+const search = (event) => { // filters notes based on entered term  
   const term = event.target.value.toLowerCase();
   boards.forEach((board) => {
     if (board.active == "active" && term.length >= 1) {
@@ -301,25 +286,12 @@ const search = (event) => {
   });
 };
 
-const date = () => {
+const date = () => {  //returns full-current date 
   var currentDate = new Date();
   var year = currentDate.getFullYear();
   var month = currentDate.getMonth();
   var day = currentDate.getDate();
-  var monthNames = [
-    "Jan.",
-    "Feb.",
-    "Mar.",
-    "Apr.",
-    "May.",
-    "Jun.",
-    "Jul.",
-    "Aug.",
-    "Sep.",
-    "Oct.",
-    "Nov.",
-    "Dec.",
-  ];
+  var monthNames = ["Jan.","Feb.","Mar.","Apr.","May.","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec.",];
   var dateStamp = monthNames[month] + " " + day + "," + year;
   return dateStamp;
 };
