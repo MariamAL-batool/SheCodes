@@ -58,6 +58,7 @@ ul li {
 nav {
   margin: 0px;
   padding-top: 3px;
+
 }
 
 .boards button {
@@ -267,3 +268,92 @@ input::placeholder {
   display: flex;
   flex-wrap: wrap;
 }
+/* Responsive design  */
+
+@media (max-width: 480px) {
+  nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .search {
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 0.5rem;
+    margin-right :0;
+  }
+
+  .nav-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    margin-bottom: 25px;
+  }
+
+  .boards {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    margin: 0px;
+    bottom: 0;
+    left: 0;
+    width: 40%; 
+  }
+  
+}
+
+
+@media (min-width: 481px) and (max-width: 629px) {
+  nav {
+  
+    position : relative;
+  }
+
+  .search {
+    margin-right: 10px;
+    padding: 3px 10px;
+  }
+
+
+  
+  .boards {
+    flex: 1;
+    display: flex;
+    left : 0;
+    bottom: 0;
+    position :absolute;
+    width :40%;
+    height : 30%;
+   
+  }
+
+  .nav-buttons {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+  }
+
+  button {
+    font-size: 10px;
+    padding: 4px 8px;
+    
+  }
+
+  .add-note {
+    width: 20px;
+    height: 20px; 
+    line-height: 20px;
+   
+ 
+  }
+
+  
+
+}
+
+
+  
