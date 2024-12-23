@@ -78,6 +78,7 @@ const add_new_note = () => {//defines note object and pushes it into notes array
   const bodyHeight = window.innerHeight - 67.95;
   const randomLeft = Math.floor(Math.random() * bodyWidth);
   const randomTop = Math.floor(Math.random() * bodyHeight);
+  
 
   note = {
     id: Date.now(),
