@@ -197,15 +197,19 @@ nav .nav-buttons .fa-trash {
   border-radius: 3px;
   transition: all 0.1s ease-in-out;
 }
-
-.hover-controls {
+.color-controls{
   display: flex;
   gap: 3px;
-  display: none;
-  position: absolute;
-  bottom: 5px;
-  left: 5px;
 }
+.hover-controls {
+  width: auto;
+  height: 50%;
+  display: flex;
+  display: none;
+  justify-content: space-between;
+  align-items: end;
+}
+
 
 .color-dot {
   width: 12px;
@@ -243,8 +247,6 @@ nav .nav-buttons .fa-trash {
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  position: absolute;
-  left: 105px;
 }
 
 .delete-btn:hover {

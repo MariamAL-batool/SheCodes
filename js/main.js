@@ -98,39 +98,28 @@ const add_new_note = () => {//defines note object and pushes it into notes array
 };
 
 const renderNotes = (notes) => { //render notes in the active board
-  boardBody.innerHTML = ""; // Clear previous notes
-
+  boardBody.innerHTML = "";
   notes.forEach((note) => {
     const noteHTML = `
-      <div class="note" id="note-${note.id}" style=" background-color: ${note.color
-      }; left: ${note.left}px; 
-               top: ${note.top}px; ">
-
-       <textarea onchange="editNoteDate(${note.id})" placeholder="${note.title
-      }" class="note-input" id="note"  "></textarea>
-
-        <div class="note-date"> ${note.changeCounter > 1 ? "Edited On: " : "Added On: "
-      } ${note.date} </div>
-
-        <div class="hover-controls">
-          <div class="color-dot gray" onclick="changeNoteColor('note-${note.id
-      }', '#e8eaed')"></div>
-          <div class="color-dot red" onclick="changeNoteColor('note-${note.id
-      }', '#FEAEAE')"></div>
-          <div class="color-dot green" onclick="changeNoteColor('note-${note.id
-      }', '#CDFCB6')"></div>
-          <div class="color-dot blue" onclick="changeNoteColor('note-${note.id
-      }', '#B6D7FC')"></div>
-          <button class="delete-btn" onclick="deleteNote(${note.id})">x</button>
-
-        </div>
+      <div class="note" id="${note.id}" style="background-color: ${note.color}; left: ${note.left}px; top: ${note.top}px;">
+  <textarea onchange="editNoteDate(${note.id})" placeholder="${note.title}" class="note-input" id="note"></textarea>
+  <div class="note-date">${note.changeCounter > 1 ? "Edited On:" : "Added On:"} ${note.date}</div>
+    <div class="hover-controls">
+      <div class="color-controls">
+        <div class="color-dot gray" onclick="changeNoteColor('${note.id}', '#e8eaed')"></div>
+        <div class="color-dot red" onclick="changeNoteColor('${note.id}', '#FEAEAE')"></div>
+        <div class="color-dot green" onclick="changeNoteColor('${note.id}', '#CDFCB6')"></div>
+        <div class="color-dot blue" onclick="changeNoteColor('${note.id}', '#B6D7FC')"></div>
       </div>
+      <button class="delete-btn " onclick="deleteNote(${note.id})">x</button>
+    </div>
+</div>
     `;
 
     boardBody.insertAdjacentHTML("beforeend", noteHTML);
 
     // Add hover functionality
-    const noteElement = document.getElementById(`note-${note.id}`);
+    const noteElement = document.getElementById(`${note.id}`);
     noteElement.addEventListener("mousedown", (e) =>
       mouseDown(e, note, noteElement)
     );
@@ -175,6 +164,7 @@ const renderNotes = (notes) => { //render notes in the active board
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
     }
+    
     noteElement.addEventListener("mouseenter", () => {
       hoverControls.style.display = "flex";
       noteDate.style.bottom = "25px";
@@ -205,7 +195,7 @@ const editNoteDate = (noteId) => {
     .changeCounter;
 
   currentNoteDate = document
-    .getElementById(`note-${noteId}`)
+    .getElementById(`${noteId}`)
     .getElementsByClassName("note-date");
 
   if (changeCounter > 1) {
@@ -220,7 +210,7 @@ const changeNoteColor = (noteId, color) => {
   // Find the note in the active board's notes
   boards.forEach((board) => {
     if (board.active === "active") {
-      const note = board.notes.find((n) => `note-${n.id}` === noteId);
+      const note = board.notes.find((n) => `${n.id}` === noteId);
       if (note) {
         note.color = color; // Update the note's color in the data
       }
@@ -241,7 +231,7 @@ const deleteNote = (noteId) => {
       if (noteIndex !== -1) {
         const noteToArchive = board.notes.splice(noteIndex, 1)[0];
         noteToArchive.content = document
-          .getElementById(`note-${noteId}`)
+          .getElementById(`${noteId}`)
           .querySelector(".note-input").value; // Save user input
         archive.push(noteToArchive); // Move to archive
         renderBoarders();
