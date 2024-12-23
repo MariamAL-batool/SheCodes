@@ -192,9 +192,10 @@ nav .nav-buttons .fa-trash {
 
 
 .note:hover {
-  border: 3px solid black;
+  border: 2px solid black;
   box-shadow: 2px 2px 4px gray;
   border-radius: 3px;
+  transition: all 0.1s ease-in-out;
 }
 
 .hover-controls {

@@ -177,7 +177,7 @@ const renderNotes = (notes) => { //render notes in the active board
     }
     noteElement.addEventListener("mouseenter", () => {
       hoverControls.style.display = "flex";
-      noteDate.style.bottom = "35px";
+      noteDate.style.bottom = "25px";
     });
 
     noteElement.addEventListener("mouseleave", () => {
