@@ -280,7 +280,7 @@ const activeteArchive = () => {
   boards.forEach((board) => {
     board.active = "";
   });
-  boardData.innerHTML = `<div class="tab-content active">archive</div>`;
+  boardData.innerHTML = `<div class="tab-content active"></div>`;
   renderArchive();
 };
 
