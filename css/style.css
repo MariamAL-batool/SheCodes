@@ -159,11 +159,9 @@ nav .nav-buttons .fa-trash {
   font-size: 5px;
   box-shadow: 1px 1px 2px gray;
   padding: 5px;
-  position: absolute;
+  position: fixed;
   resize: both;
   overflow :hidden;
-  /* left:10px;
-  top:10px; */
 
 }
 
