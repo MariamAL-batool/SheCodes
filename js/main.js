@@ -77,10 +77,12 @@ const renderNotes = (notes, callerName = "") => {
   boardBody.innerHTML = "";
   notes.forEach((note) => {
     const noteHTML = `
-      <div class="note" id="${note.id}" style="background-color: ${
+      <div class="note " id="${note.id}" style="background-color: ${
       note.color
-    }; left: ${note.left}px; top: ${note.top}px;">
-  <textarea   ${
+    }; left: ${note.left}px; top: ${note.top}px; ">
+  <textarea  
+  
+  ${
     archived
       ? `onmouseover="disableTextarea(${note.id})"`
       : `onchange="editNoteDate(${note.id})"`
@@ -288,6 +290,18 @@ const changeNoteColor = (noteId, color) => {
   const noteElement = document.getElementById(noteId);
   if (noteElement) {
     noteElement.style.backgroundColor = color;
+    const textColor =
+      color === "#FEAEAE" || color === "#B6D7FC" // Red or Blue
+        ? "#000000" // Black text for light backgrounds
+        : "#838383"; // Default gray for darker backgrounds
+
+    const noteInput = noteElement.querySelector(".note-input");
+    const noteDate = noteElement.querySelector(".note-date");
+
+    if (noteInput) {
+      noteInput.style.color = textColor; // Update text color
+      noteDate.style.color = textColor; // Update text color
+    }
   }
 };
 // Delete a note and move it to the archive
