@@ -134,6 +134,7 @@ nav .nav-buttons .fa-trash {
 }
 
 .nav-buttons button:hover,
+.nav-buttons button:active,
 .nav-buttons button:focus {
   background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
 }

@@ -5,29 +5,37 @@ let boardCounter = 1;
 
 let isDragging = false;
 
-
 // get boards with their notes from local storage and initialize the boards with a default Home board
 const getBoards = () => {
-  const boardData = localStorage.getItem('boards');
-  return boardData ? JSON.parse(boardData) : [ { id: 0,   name: "Home",   creationDate: Date.now(),   active: "active",   notes: []  },];
-} 
+  const boardData = localStorage.getItem("boards");
+  return boardData
+    ? JSON.parse(boardData)
+    : [
+        {
+          id: 0,
+          name: "Home",
+          creationDate: Date.now(),
+          active: "active",
+          notes: [],
+        },
+      ];
+};
 //store boards with their notes  to the local storage
 const storeboards = () => {
-  localStorage.setItem('boards', JSON.stringify(boards));
-}
+  localStorage.setItem("boards", JSON.stringify(boards));
+};
 //get Archive Notes from  the local storage
 const getArchiveNote = () => {
-  const archiveNotes = localStorage.getItem('archive');
+  const archiveNotes = localStorage.getItem("archive");
   return archiveNotes ? JSON.parse(archiveNotes) : [];
-} 
+};
 // store  Archive Notes to the local storage
 const storeArchiveNote = () => {
-  localStorage.setItem('archive', JSON.stringify(archive));
-}
-
+  localStorage.setItem("archive", JSON.stringify(archive));
+};
 
 let boards = getBoards();
-let archive = getArchiveNote ();
+let archive = getArchiveNote();
 
 //function to add new board
 const addBoard = () => {
@@ -62,28 +70,58 @@ const addBoard = () => {
   }
 };
 
-const renderNotes = (notes) => { //render notes in the active board
+const renderNotes = (notes, callerName = "") => {
+  //render notes in the active board
+  const archived = callerName == "renderArchive"; //check if the caller is archive
+
   boardBody.innerHTML = "";
   notes.forEach((note) => {
     const noteHTML = `
-      <div class="note" id="${note.id}" style="background-color: ${note.color}; left: ${note.left}px; top: ${note.top}px;">
-  <textarea onchange="editNoteDate(${note.id})" placeholder="${note.title}" class="note-input" id="note"></textarea>
-  <div class="note-date">${note.changeCounter > 1 ? "Edited On:" : "Added On:"} ${note.date}</div>
-    <div class="hover-controls">
+      <div class="note" id="${note.id}" style="background-color: ${
+      note.color
+    }; left: ${note.left}px; top: ${note.top}px;">
+  <textarea   ${
+    archived
+      ? `onmouseover="disableTextarea(${note.id})"`
+      : `onchange="editNoteDate(${note.id})"`
+  }
+  placeholder="${note.title}" class="note-input" id="note"></textarea>
+  <div class="note-date">
+ ${
+   archived
+     ? "Archived"
+     : note.changeCounter > 1
+     ? `Edited On: ${note.date}`
+     : `Added On: ${note.date}`
+ }
+ </div>
+
+      <div class="hover-controls">
+       ${
+         archived
+           ? ""
+           : `
       <div class="color-controls">
         <div class="color-dot gray" onclick="changeNoteColor('${note.id}', '#e8eaed')"></div>
         <div class="color-dot red" onclick="changeNoteColor('${note.id}', '#FEAEAE')"></div>
         <div class="color-dot green" onclick="changeNoteColor('${note.id}', '#CDFCB6')"></div>
         <div class="color-dot blue" onclick="changeNoteColor('${note.id}', '#B6D7FC')"></div>
-      </div>
-      <button class="delete-btn " onclick="deleteNote(${note.id})">x</button>
+      </div>`
+       }
+      <button class="delete-btn "  onclick =   ${
+        archived
+          ? `"deleteFromArchive(${note.id})"`
+          : `"deleteNote(${note.id})"`
+      }>x</button>
     </div>
-</div>
-    `;
+ 
+    
+</div>`;
 
     boardBody.insertAdjacentHTML("beforeend", noteHTML);
 
     // Add hover functionality
+
     const noteElement = document.getElementById(`${note.id}`);
     const hoverControls = noteElement.querySelector(".hover-controls");
     const noteDate = noteElement.querySelector(".note-date");
@@ -93,48 +131,45 @@ const renderNotes = (notes) => { //render notes in the active board
       // window.getComputedStyle show the actual dimensions of the element in the browser
       const noteStyle = window.getComputedStyle(noteElement);
       // e.clientX and e.clientY specify the location of the mouse pointer  relative to (x-axis and y-axis).
-      //noteElement.offsetLeft  is the distance  between the left edge of the noteElement and the left edge of the document body 
-      //noteElement.offsetTop  is the distance  between the top edge of the noteElement and the top edge of the document body 
+      //noteElement.offsetLeft  is the distance  between the left edge of the noteElement and the left edge of the document body
+      //noteElement.offsetTop  is the distance  between the top edge of the noteElement and the top edge of the document body
       // isResizing checks whether the mouse pointer is near the bottom-right corner of the noteElement
-      const isResizing = e.clientX >= noteElement.offsetLeft + parseInt(noteStyle.width) - 10 &&
-                         e.clientY >=  noteElement.offsetTop + parseInt(noteStyle.height) - 10;
-      // if not resizing start dragging 
+      const isResizing =
+        e.clientX >= noteElement.offsetLeft + parseInt(noteStyle.width) - 10 &&
+        e.clientY >= noteElement.offsetTop + parseInt(noteStyle.height) - 10;
+      // if not resizing start dragging
       if (!isResizing) {
         isDragging = true;
-      // startX  and startY  store the initial mouse position  relative to the   note element
+        // startX  and startY  store the initial mouse position  relative to the   note element
         startX = e.clientX - noteElement.offsetLeft;
         startY = e.clientY - noteElement.offsetTop;
 
-      // Add move and up event listeners specifically for this note
+        // Add move and up event listeners specifically for this note
         const onMouseMove = (e) => {
           if (isDragging) {
             // Calculate the new X  and y position for dragging
             const newX = e.clientX - startX;
             const newY = e.clientY - startY;
-           // Update the position of the note 
+            // Update the position of the note
             noteElement.style.left = newX + "px";
             noteElement.style.top = newY + "px";
             note.left = newX;
             note.top = newY;
-
           }
         };
 
         const onMouseUp = () => {
-          isDragging = false; 
+          isDragging = false;
           // Stop dragging
           document.removeEventListener("mousemove", onMouseMove);
           storeboards();
-      
         };
 
         document.addEventListener("mousemove", onMouseMove);
-       document.addEventListener("mouseup", onMouseUp);
+        document.addEventListener("mouseup", onMouseUp);
       }
-      
     });
-  
-    
+
     noteElement.addEventListener("mouseenter", () => {
       hoverControls.style.display = "flex";
       noteDate.style.bottom = "25px";
@@ -152,7 +187,6 @@ const renderNotes = (notes) => { //render notes in the active board
   });
 };
 
-
 const renderBoarders = () => {
   boardButtons.innerHTML = "";
   boardBody.innerHTML = " ";
@@ -169,23 +203,21 @@ const renderBoarders = () => {
 
     boardButtons.insertAdjacentHTML("beforeend", boardButton);
     if (board.notes.length >= 1 && board.active == "active") {
-      renderNotes(board.notes);
+      renderNotes(board.notes, "renderBoarders");
     }
   });
-
 };
 
 renderBoarders();
 
+const add_new_note = () => {
+  //defines note object and pushes it into notes array in the active board
 
-const add_new_note = () => {//defines note object and pushes it into notes array in the active board
- 
   //Random note position
-  const bodyWidth = window.innerWidth - 67.95;  //67.59 is navbar height, to avoid note display above it
+  const bodyWidth = window.innerWidth - 67.95; //67.59 is navbar height, to avoid note display above it
   const bodyHeight = window.innerHeight - 67.95;
   const randomLeft = Math.floor(Math.random() * bodyWidth);
   const randomTop = Math.floor(Math.random() * bodyHeight);
-  
 
   note = {
     id: Date.now(),
@@ -205,8 +237,6 @@ const add_new_note = () => {//defines note object and pushes it into notes array
   renderBoarders();
   storeboards();
 };
-
-
 
 const editNoteDate = (noteId) => {
   let boardId;
@@ -232,6 +262,15 @@ const editNoteDate = (noteId) => {
   storeboards();
 };
 
+const disableTextarea = (noteId) => {
+  // let textarea = document.getElementById("myTextarea");
+  // textarea.disabled = true;
+  currentNoteTextarea = document
+    .getElementById(`${noteId}`)
+    .getElementsByClassName("note-input");
+  currentNoteTextarea[0].disabled = true;
+};
+
 // Update the background color of a specific note and save it to the note data
 const changeNoteColor = (noteId, color) => {
   // Find the note in the active board's notes
@@ -255,6 +294,7 @@ const changeNoteColor = (noteId, color) => {
 const deleteNote = (noteId) => {
   boards.forEach((board) => {
     if (board.active === "active") {
+      board.notes;
       const noteIndex = board.notes.findIndex((note) => note.id === noteId);
       if (noteIndex !== -1) {
         const noteToArchive = board.notes.splice(noteIndex, 1)[0];
@@ -270,8 +310,8 @@ const deleteNote = (noteId) => {
 };
 
 const renderArchive = () => {
-  boardBody.innerHTML = ""; 
-  renderNotes(archive);
+  boardBody.innerHTML = "";
+  renderNotes(archive, "renderArchive");
   storeboards();
 };
 
@@ -281,6 +321,8 @@ const activeteArchive = () => {
     board.active = "";
   });
   boardData.innerHTML = `<div class="tab-content active"></div>`;
+
+  renderBoarders();
   renderArchive();
 };
 
@@ -290,11 +332,10 @@ const activate = (index) => {
   });
   boards[index].active = "active";
   renderBoarders();
-  
 };
 
-
-const search = (event) => { // filters notes based on entered term 
+const search = (event) => {
+  // filters notes based on entered term
   const term = event.target.value.toLowerCase();
   const activeBoard = boards.find((board) => board.active === "active");
 
@@ -302,20 +343,44 @@ const search = (event) => { // filters notes based on entered term
     const filteredItems = activeBoard.notes.filter((note) =>
       note.title.toLowerCase().includes(term)
     );
-    renderNotes(filteredItems); 
-  }  else {
-    renderBoarders(); 
+    renderNotes(filteredItems, "search");
+  } else {
+    renderBoarders();
   }
 };
 
-
-
-const date = () => {  //returns full-current date 
+const date = () => {
+  //returns full-current date
   var currentDate = new Date();
   var year = currentDate.getFullYear();
   var month = currentDate.getMonth();
   var day = currentDate.getDate();
-  var monthNames = ["Jan.","Feb.","Mar.","Apr.","May.","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec.",];
+  var monthNames = [
+    "Jan.",
+    "Feb.",
+    "Mar.",
+    "Apr.",
+    "May.",
+    "Jun.",
+    "Jul.",
+    "Aug.",
+    "Sep.",
+    "Oct.",
+    "Nov.",
+    "Dec.",
+  ];
   var dateStamp = monthNames[month] + " " + day + "," + year;
   return dateStamp;
+};
+
+//Delete note pemanently
+const deleteFromArchive = (noteId) => {
+  const noteIndex = archive.findIndex((note) => note.id === noteId);
+  if (noteIndex !== -1) {
+    if (confirm("Are you sure you want to delete this note permanently?")) {
+      archive.splice(noteIndex, 1);
+      storeArchiveNote();
+      renderArchive();
+    }
+  }
 };
